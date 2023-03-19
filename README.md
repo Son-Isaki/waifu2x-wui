@@ -1,5 +1,7 @@
 # waifu2x-wui
 ![waifu2x-wui](https://img.shields.io/badge/1.0.0-waifu2x--wui-orange)
+![support windows x64](https://img.shields.io/badge/support-windows%20x64-green)
+![waifu2x](https://img.shields.io/badge/image--processor-waifu2x-green)
 
 waifu2x-wui is a windows application that allows you upscale and post-process images in one go.
 
