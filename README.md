@@ -8,6 +8,9 @@ waifu2x-wui is a windows application that allows you upscale and post-process im
 I needed to export files in differents formats like Adobe does it with the powerful [waifu2x](https://waifu2x.udp.jp/) image processor.
 So I created a useful interface to speed up my workflow and decided to share it.
 
+![Window](/Docs/window.png "Window")
+
+
 ## Features
 
 * Multiple exports configuration

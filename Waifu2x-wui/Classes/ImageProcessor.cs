@@ -38,12 +38,14 @@ namespace Waifu2xWui
 			OutputFile output = Profile.OutputFiles[processIndex];
 
 			if (
+				!output.IsActive ||
 				output.CompareWithSourceFilename(Profile.SourceFilename)
 			)
 			{
 				Logger.Log($"Can't process {output.GetOutputFilename(Profile.SourceFilename)} because the output filename is the same as the original file.", LogType.Warning);
 				processIndex++;
 				ProcessNext();
+				return;
 			}
 
 			var outputFilename = output.GetOutputFilename(Profile.SourceFilename);
