@@ -1,8 +1,11 @@
 using Microsoft.VisualBasic.Logging;
 using System.Collections;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using Waifu2xWeb;
 
 namespace Waifu2xWui
@@ -22,6 +25,7 @@ namespace Waifu2xWui
 		readonly ImageProcessor processor;
 		readonly FileDropper fileDropper;
 		readonly ProfileManager profileManager;
+		readonly LanguageManager languageManager;
 
 		int sourceWidth = 0;
 		bool loaded = false;
@@ -37,6 +41,7 @@ namespace Waifu2xWui
 			fileDropper = new FileDropper(this);
 			processor = new ImageProcessor();
 			profileManager = new ProfileManager();
+			languageManager = new LanguageManager();
 		}
 
 		private void OnLoad(object sender, EventArgs e)
@@ -65,6 +70,13 @@ namespace Waifu2xWui
 			// initialize form and fields
 			SetupFields();
 			SetupProfile(profile);
+
+			// setup languages
+			languageManager.LoadAvailableLanguages(GetType());
+			language.Items.Clear();
+			language.DataSource = languageManager.GetAvailableLanguages();
+			language.DisplayMember = "Name";
+			//language.ValueMember = "Iso";
 
 			// update the source infos label
 			GetSourceFileInfos(profile.SourceFilename);
@@ -245,9 +257,6 @@ namespace Waifu2xWui
 				if (row.Cells.Count < dataGridView1.ColumnCount)
 					continue;
 
-				/*if (row.Cells[0].Value == null || !(bool)row.Cells[0].Value)
-					continue;*/
-
 				var output = new OutputFile()
 				{
 					Extension = row.Cells[3].Value?.ToString(),
@@ -277,6 +286,11 @@ namespace Waifu2xWui
 		{
 			UpdateProfile();
 			SaveProfile();
+		}
+
+		private void OnLanguageChanged(object sender, EventArgs e)
+		{
+			languageManager.SwitchToLanguage(this, (Language)language.SelectedValue);
 		}
 	}
 }
