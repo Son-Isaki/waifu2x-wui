@@ -61,11 +61,6 @@ namespace Waifu2xWui
 
 			// initialize the processor
 			processor.Profile = profile;
-			processor.OnImageProcessed += (OutputFile outputFile) =>
-			{
-				progressBar1.PerformStep();
-				Logger.Log($"{outputFile.GetOutputFilename(processor.Profile.SourceFilename)} has been processed", LogType.Success);
-			};
 
 			// initialize form and fields
 			SetupFields();
@@ -102,6 +97,10 @@ namespace Waifu2xWui
 			InitializeModels();
 			InitializeAllowedExtensions();
 			InitializeDevices();
+
+			progressStatusBar.Value = 0;
+			labelStatusBar.Text = "";
+			labelCurrentFile.Text = "";
 		}
 
 		private void SetupProfile(Profile profile)
@@ -182,7 +181,7 @@ namespace Waifu2xWui
 			GetSourceFileInfos(filepath);
 		}
 
-		private void Generate(object sender, MouseEventArgs e)
+		private void Generate_OnClick(object sender, MouseEventArgs e)
 		{
 			if (!File.Exists(processor.Profile.SourceFilename))
 			{
@@ -190,15 +189,19 @@ namespace Waifu2xWui
 				return;
 			}
 
-			// progressbar
-			progressBar1.Value = 0;
-			progressBar1.Maximum = processor.Profile.OutputFiles.Where(o => o.IsActive).Count();
-
-			// source width
 			processor.SourceWidth = sourceWidth;
+			if (!worker.IsBusy)
+			{
+				worker.RunWorkerAsync();
+			}
+		}
 
-			// process images
-			processor.Start();
+		private void Cancel_OnClick(object sender, EventArgs e)
+		{
+			if (worker.IsBusy)
+			{
+				worker.CancelAsync();
+			}
 		}
 
 		private void GetSourceFileInfos(string filepath)
@@ -265,11 +268,14 @@ namespace Waifu2xWui
 
 				var output = new OutputFile()
 				{
-					IsActive = (bool)row.Cells[0].Value,
 					Extension = row.Cells[3].Value?.ToString(),
 					Suffix = row.Cells[4].Value?.ToString(),
 				};
 
+				if (bool.TryParse(row.Cells[0].Value?.ToString(), out bool isActive))
+				{
+					output.IsActive = isActive;
+				}
 				if (int.TryParse(row.Cells[1].Value?.ToString(), out int width))
 				{
 					output.Width = width;
@@ -302,6 +308,66 @@ namespace Waifu2xWui
 		{
 			UpdateProfile();
 			languageManager.SwitchToLanguage(this, (Language)language.SelectedValue);
+		}
+
+		private void StartWorker(object sender, DoWorkEventArgs e)
+		{
+			// Do not access the form's BackgroundWorker reference directly.
+			// Instead, use the reference provided by the sender parameter.
+			var bw = sender as BackgroundWorker;
+
+			// Start to process images
+			e.Result = processor.Start(bw);
+
+			// If the operation was canceled by the user,
+			// set the DoWorkEventArgs.Cancel property to true.
+			if (bw.CancellationPending)
+			{
+				e.Cancel = true;
+			}
+		}
+
+		private void WorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			var progress = (int)e.ProgressPercentage;
+			var output = (OutputFile)e.UserState;
+
+			//Logger.Log($"{progress} : {output?.Suffix}", LogType.Info);
+
+			// count output to process
+			int max = processor.Profile.GetFilesToProcess().Count;
+
+			if (progress == 0)
+			{
+				// progressbar
+				progressStatusBar.Maximum = max;
+			}
+			else
+			{
+				// progressbar
+				progressStatusBar.Value = progress;
+			}
+
+			if (progress < max)
+			{
+				if (output != null)
+				{
+					labelCurrentFile.Text = $"{output.GetOutputFilename(processor.Profile.SourceFilename)}";
+				}
+			}
+
+			// label
+			labelStatusBar.Text = $"{progress} / {max}";
+		}
+
+		private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			// progressbar
+			progressStatusBar.Value = 0;
+
+			// label
+			labelStatusBar.Text = "";
+			labelCurrentFile.Text = "";
 		}
 	}
 }

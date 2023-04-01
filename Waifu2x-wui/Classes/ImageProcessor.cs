@@ -2,6 +2,7 @@ using System.Diagnostics;
 using static Waifu2xWui.MainForm;
 using System.Windows.Forms;
 using Waifu2xWeb;
+using System.ComponentModel;
 
 namespace Waifu2xWui
 {
@@ -17,16 +18,29 @@ namespace Waifu2xWui
 		private Process process;
 		private int processIndex = 0;
 
-		public Action<OutputFile> OnImageProcessed;
+		protected List<OutputFile> outputToProcess = new List<OutputFile>();
 
-		public void Start()
+		public int Start(BackgroundWorker bw)
 		{
+			int result = 0;
+
 			PrepareProcess();
-			ProcessNext();
+
+			while (HasOutputFileToProcess())
+			{
+				bw.ReportProgress(processIndex, processIndex < outputToProcess.Count ? outputToProcess[processIndex] : null);
+				ProcessNext();
+				bw.ReportProgress(processIndex, processIndex < outputToProcess.Count ? outputToProcess[processIndex] : null);
+			}
+
+			Thread.Sleep(1400);
+
+			return result;
 		}
 
 		private void PrepareProcess()
 		{
+			outputToProcess = Profile.GetFilesToProcess();
 			processIndex = 0;
 		}
 
@@ -35,16 +49,7 @@ namespace Waifu2xWui
 			if (!HasOutputFileToProcess())
 				return;
 
-			OutputFile output = Profile.OutputFiles[processIndex];
-
-			if (
-				!output.IsActive
-			)
-			{
-				processIndex++;
-				ProcessNext();
-				return;
-			}
+			OutputFile output = outputToProcess[processIndex];
 
 			if (
 				output.CompareWithSourceFilename(Profile.SourceFilename)
@@ -52,7 +57,6 @@ namespace Waifu2xWui
 			{
 				Logger.Log($"Can't process {output.GetOutputFilename(Profile.SourceFilename)} because the output filename is the same as the original file.", LogType.Warning);
 				processIndex++;
-				ProcessNext();
 				return;
 			}
 
@@ -69,8 +73,6 @@ namespace Waifu2xWui
 				$"-p {Profile.Device.ToString().ToLower()} " +
 				$"-t 0";
 
-			//Logger.Log(commandArguments);
-
 			ProcessCommand(commandArguments);
 		}
 
@@ -78,7 +80,7 @@ namespace Waifu2xWui
 		{
 			return (
 				processIndex >= 0 &&
-				processIndex < Profile.OutputFiles.Count
+				processIndex < outputToProcess.Count
 			);
 		}
 
@@ -130,11 +132,7 @@ namespace Waifu2xWui
 		private void OnProcessExit(object? sender, EventArgs e)
 		{
 			process.Close();
-
-			OnImageProcessed?.Invoke(Profile.OutputFiles[processIndex]);
-
 			processIndex++;
-			ProcessNext();
 		}
 	}
 }

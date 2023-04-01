@@ -1,5 +1,7 @@
+<div align="center">
+
 # waifu2x-wui
-![waifu2x-wui](https://img.shields.io/badge/1.0.0-waifu2x--wui-orange)
+![waifu2x-wui](https://img.shields.io/badge/0.0.1-waifu2x--wui-orange)
 ![support windows x64](https://img.shields.io/badge/support-windows%20x64-green)
 ![waifu2x](https://img.shields.io/badge/image--processor-waifu2x-green)
 
@@ -8,8 +10,13 @@ waifu2x-wui is a windows application that allows you upscale and post-process im
 I needed to export files in differents formats like Adobe does it with the powerful [waifu2x](https://waifu2x.udp.jp/) image processor.
 So I created a useful interface to speed up my workflow and decided to share it.
 
+<p></p>
+
 ![Window](/Docs/window.png "Window")
 
+</div>
+
+<p></p>
 
 ## Features
 
@@ -19,10 +26,10 @@ So I created a useful interface to speed up my workflow and decided to share it.
 
 ## TODO
 
-* Run the export process in background
+* Run the export process in background **[DONE]**
 * Add multiple file input / folder inputs ?
 * Logs in popup ?
-* Gui support for other languages ?
+* Gui support for other languages **[DONE]**
 
 ## Developpers
 

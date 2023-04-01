@@ -30,7 +30,14 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+			DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
 			DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+			Label label7;
+			Label label6;
+			Label label5;
+			Label label4;
+			Label label3;
+			Label label1;
 			splitContainer1 = new SplitContainer();
 			groupBox2 = new GroupBox();
 			dataGridView1 = new DataGridView();
@@ -41,13 +48,8 @@
 			Suffix = new DataGridViewTextBoxColumn();
 			groupBox3 = new GroupBox();
 			tableLayoutPanel1 = new TableLayoutPanel();
-			label7 = new Label();
 			modelField = new ComboBox();
-			label6 = new Label();
 			numericUpDown1 = new NumericUpDown();
-			label5 = new Label();
-			label4 = new Label();
-			label3 = new Label();
 			noiseField = new ComboBox();
 			domainUpDown2 = new DomainUpDown();
 			deviceField = new ComboBox();
@@ -55,11 +57,21 @@
 			label2 = new Label();
 			sourceFilenameField = new TextBox();
 			browseButton = new Button();
-			label1 = new Label();
 			generateButton = new Button();
-			progressBar1 = new ProgressBar();
 			richTextBox1 = new RichTextBox();
 			language = new ComboBox();
+			worker = new System.ComponentModel.BackgroundWorker();
+			statusStrip1 = new StatusStrip();
+			progressStatusBar = new ToolStripProgressBar();
+			labelStatusBar = new ToolStripStatusLabel();
+			labelCurrentFile = new ToolStripStatusLabel();
+			cancelButton = new Button();
+			label7 = new Label();
+			label6 = new Label();
+			label5 = new Label();
+			label4 = new Label();
+			label3 = new Label();
+			label1 = new Label();
 			((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
 			splitContainer1.Panel1.SuspendLayout();
 			splitContainer1.Panel2.SuspendLayout();
@@ -70,6 +82,7 @@
 			tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
 			groupBox1.SuspendLayout();
+			statusStrip1.SuspendLayout();
 			SuspendLayout();
 			// 
 			// splitContainer1
@@ -79,37 +92,50 @@
 			// 
 			// splitContainer1.Panel1
 			// 
-			resources.ApplyResources(splitContainer1.Panel1, "splitContainer1.Panel1");
 			splitContainer1.Panel1.Controls.Add(groupBox2);
+			resources.ApplyResources(splitContainer1.Panel1, "splitContainer1.Panel1");
 			// 
 			// splitContainer1.Panel2
 			// 
-			resources.ApplyResources(splitContainer1.Panel2, "splitContainer1.Panel2");
 			splitContainer1.Panel2.Controls.Add(groupBox3);
+			resources.ApplyResources(splitContainer1.Panel2, "splitContainer1.Panel2");
 			// 
 			// groupBox2
 			// 
-			resources.ApplyResources(groupBox2, "groupBox2");
 			groupBox2.Controls.Add(dataGridView1);
+			resources.ApplyResources(groupBox2, "groupBox2");
 			groupBox2.Name = "groupBox2";
 			groupBox2.TabStop = false;
 			// 
 			// dataGridView1
 			// 
-			resources.ApplyResources(dataGridView1, "dataGridView1");
 			dataGridView1.AllowUserToResizeColumns = false;
+			dataGridView1.AllowUserToResizeRows = false;
 			dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			dataGridView1.BackgroundColor = SystemColors.Control;
+			dataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 			dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Active, Width, Noise, Extension, Suffix });
+			resources.ApplyResources(dataGridView1, "dataGridView1");
+			dataGridView1.EnableHeadersVisualStyles = false;
+			dataGridView1.MultiSelect = false;
 			dataGridView1.Name = "dataGridView1";
-			dataGridView1.RowHeadersVisible = false;
-			dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+			dataGridView1.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 			dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-			dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle2.BackColor = SystemColors.Control;
+			dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+			dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+			dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+			dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+			dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+			dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+			dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+			dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
 			dataGridView1.RowTemplate.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 			dataGridView1.RowTemplate.Height = 25;
 			dataGridView1.RowTemplate.Resizable = DataGridViewTriState.False;
+			dataGridView1.ShowCellToolTips = false;
 			dataGridView1.CellValueChanged += OnProfileUpdated;
 			// 
 			// Active
@@ -162,8 +188,8 @@
 			// 
 			// groupBox3
 			// 
-			resources.ApplyResources(groupBox3, "groupBox3");
 			groupBox3.Controls.Add(tableLayoutPanel1);
+			resources.ApplyResources(groupBox3, "groupBox3");
 			groupBox3.Name = "groupBox3";
 			groupBox3.TabStop = false;
 			// 
@@ -247,6 +273,11 @@
 			deviceField.FormattingEnabled = true;
 			deviceField.Name = "deviceField";
 			// 
+			// label1
+			// 
+			resources.ApplyResources(label1, "label1");
+			label1.Name = "label1";
+			// 
 			// groupBox1
 			// 
 			resources.ApplyResources(groupBox1, "groupBox1");
@@ -264,8 +295,8 @@
 			// 
 			// sourceFilenameField
 			// 
-			resources.ApplyResources(sourceFilenameField, "sourceFilenameField");
 			sourceFilenameField.AllowDrop = true;
+			resources.ApplyResources(sourceFilenameField, "sourceFilenameField");
 			sourceFilenameField.Name = "sourceFilenameField";
 			sourceFilenameField.TextChanged += OnProfileUpdated;
 			// 
@@ -276,23 +307,12 @@
 			browseButton.UseVisualStyleBackColor = true;
 			browseButton.MouseClick += SelectSourceFile;
 			// 
-			// label1
-			// 
-			resources.ApplyResources(label1, "label1");
-			label1.Name = "label1";
-			// 
 			// generateButton
 			// 
 			resources.ApplyResources(generateButton, "generateButton");
 			generateButton.Name = "generateButton";
 			generateButton.UseVisualStyleBackColor = true;
-			generateButton.MouseClick += Generate;
-			// 
-			// progressBar1
-			// 
-			resources.ApplyResources(progressBar1, "progressBar1");
-			progressBar1.Name = "progressBar1";
-			progressBar1.Step = 1;
+			generateButton.MouseClick += Generate_OnClick;
 			// 
 			// richTextBox1
 			// 
@@ -305,20 +325,60 @@
 			// 
 			// language
 			// 
-			resources.ApplyResources(language, "language");
 			language.FormattingEnabled = true;
+			resources.ApplyResources(language, "language");
 			language.Name = "language";
 			language.SelectedValueChanged += OnLanguageChanged;
+			// 
+			// worker
+			// 
+			worker.WorkerReportsProgress = true;
+			worker.WorkerSupportsCancellation = true;
+			worker.DoWork += StartWorker;
+			worker.ProgressChanged += WorkerProgressChanged;
+			worker.RunWorkerCompleted += WorkerCompleted;
+			// 
+			// statusStrip1
+			// 
+			statusStrip1.Items.AddRange(new ToolStripItem[] { progressStatusBar, labelStatusBar, labelCurrentFile });
+			resources.ApplyResources(statusStrip1, "statusStrip1");
+			statusStrip1.Name = "statusStrip1";
+			// 
+			// progressStatusBar
+			// 
+			progressStatusBar.Name = "progressStatusBar";
+			resources.ApplyResources(progressStatusBar, "progressStatusBar");
+			progressStatusBar.Step = 1;
+			progressStatusBar.Style = ProgressBarStyle.Continuous;
+			progressStatusBar.Value = 50;
+			// 
+			// labelStatusBar
+			// 
+			labelStatusBar.Name = "labelStatusBar";
+			resources.ApplyResources(labelStatusBar, "labelStatusBar");
+			// 
+			// labelCurrentFile
+			// 
+			labelCurrentFile.Name = "labelCurrentFile";
+			resources.ApplyResources(labelCurrentFile, "labelCurrentFile");
+			// 
+			// cancelButton
+			// 
+			resources.ApplyResources(cancelButton, "cancelButton");
+			cancelButton.Name = "cancelButton";
+			cancelButton.UseVisualStyleBackColor = true;
+			cancelButton.Click += Cancel_OnClick;
 			// 
 			// MainForm
 			// 
 			resources.ApplyResources(this, "$this");
 			AutoScaleMode = AutoScaleMode.Font;
+			Controls.Add(cancelButton);
+			Controls.Add(statusStrip1);
 			Controls.Add(language);
 			Controls.Add(richTextBox1);
-			Controls.Add(progressBar1);
-			Controls.Add(splitContainer1);
 			Controls.Add(generateButton);
+			Controls.Add(splitContainer1);
 			Controls.Add(groupBox1);
 			FormBorderStyle = FormBorderStyle.FixedDialog;
 			Name = "MainForm";
@@ -334,7 +394,10 @@
 			((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
 			groupBox1.ResumeLayout(false);
 			groupBox1.PerformLayout();
+			statusStrip1.ResumeLayout(false);
+			statusStrip1.PerformLayout();
 			ResumeLayout(false);
+			PerformLayout();
 		}
 
 		#endregion
@@ -346,7 +409,6 @@
 		private GroupBox groupBox2;
 		private DataGridView dataGridView1;
 		private Button generateButton;
-		private ProgressBar progressBar1;
 		private GroupBox groupBox3;
 		private SplitContainer splitContainer1;
 		private Label label2;
@@ -368,5 +430,11 @@
 		private DataGridViewComboBoxColumn Extension;
 		private DataGridViewTextBoxColumn Suffix;
 		private ComboBox language;
+		private System.ComponentModel.BackgroundWorker worker;
+		private StatusStrip statusStrip1;
+		private ToolStripStatusLabel labelStatusBar;
+		private ToolStripProgressBar progressStatusBar;
+		private ToolStripStatusLabel labelCurrentFile;
+		private Button cancelButton;
 	}
 }

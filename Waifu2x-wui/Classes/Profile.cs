@@ -45,5 +45,10 @@ namespace Waifu2xWeb
 			Device = Device.GPU;
 			NoiseReduction = 1;
 		}
+
+		public List<OutputFile> GetFilesToProcess()
+		{
+			return OutputFiles.Where(o => o.IsActive).ToList();
+		}
 	}
 }

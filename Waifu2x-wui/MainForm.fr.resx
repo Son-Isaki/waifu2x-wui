@@ -57,6 +57,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Exports</value>
+  </data>
   <data name="Active.HeaderText" xml:space="preserve">
     <value>Activé</value>
   </data>
@@ -66,27 +69,21 @@
   <data name="Noise.HeaderText" xml:space="preserve">
     <value>Réduction du bruit</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>Exports</value>
-  </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Réduction du bruit</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label1.Text" xml:space="preserve">
+    <value>Image source</value>
   </data>
   <data name="browseButton.Text" xml:space="preserve">
     <value>Parcourir</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 15</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Image source</value>
-  </data>
   <data name="generateButton.Text" xml:space="preserve">
-    <value>Générer !</value>
+    <value>Générer</value>
   </data>
-  <data name="language.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 23</value>
+  <data name="cancelButton.Text" xml:space="preserve">
+    <value>Annuler</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
