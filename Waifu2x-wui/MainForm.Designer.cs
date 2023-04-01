@@ -343,6 +343,7 @@
 			statusStrip1.Items.AddRange(new ToolStripItem[] { progressStatusBar, labelStatusBar, labelCurrentFile });
 			resources.ApplyResources(statusStrip1, "statusStrip1");
 			statusStrip1.Name = "statusStrip1";
+			statusStrip1.SizingGrip = false;
 			// 
 			// progressStatusBar
 			// 
@@ -381,6 +382,7 @@
 			Controls.Add(splitContainer1);
 			Controls.Add(groupBox1);
 			FormBorderStyle = FormBorderStyle.FixedDialog;
+			MaximizeBox = false;
 			Name = "MainForm";
 			Load += OnLoad;
 			splitContainer1.Panel1.ResumeLayout(false);
