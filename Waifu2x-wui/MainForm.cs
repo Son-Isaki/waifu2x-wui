@@ -192,7 +192,7 @@ namespace Waifu2xWui
 
 			// progressbar
 			progressBar1.Value = 0;
-			progressBar1.Maximum = processor.Profile.OutputFiles.Count;
+			progressBar1.Maximum = processor.Profile.OutputFiles.Where(o => o.IsActive).Count();
 
 			// source width
 			processor.SourceWidth = sourceWidth;
@@ -265,6 +265,7 @@ namespace Waifu2xWui
 
 				var output = new OutputFile()
 				{
+					IsActive = (bool)row.Cells[0].Value,
 					Extension = row.Cells[3].Value?.ToString(),
 					Suffix = row.Cells[4].Value?.ToString(),
 				};

@@ -38,7 +38,15 @@ namespace Waifu2xWui
 			OutputFile output = Profile.OutputFiles[processIndex];
 
 			if (
-				!output.IsActive ||
+				!output.IsActive
+			)
+			{
+				processIndex++;
+				ProcessNext();
+				return;
+			}
+
+			if (
 				output.CompareWithSourceFilename(Profile.SourceFilename)
 			)
 			{
