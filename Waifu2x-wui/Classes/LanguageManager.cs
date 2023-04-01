@@ -20,7 +20,6 @@ namespace Waifu2xWui
 			this.culture = culture;
 			name = culture.TextInfo.ToTitleCase(culture.NativeName);
 			iso = culture.TwoLetterISOLanguageName.ToUpper();
-			Logger.Log($"Language found : {name}");
 		}
 
 		public CultureInfo Culture => culture;
@@ -62,8 +61,7 @@ namespace Waifu2xWui
 			{
 				Thread.CurrentThread.CurrentCulture = language.Culture;
 				Thread.CurrentThread.CurrentUICulture = language.Culture;
-				ApplyResourceToControl(control, manager, language.Culture);
-				Logger.Log($"Language changed to {language.Name}", LogType.Success);
+				ApplyLanguageToControls(control, manager, language.Culture);
 			}
 			else
 			{
@@ -71,7 +69,7 @@ namespace Waifu2xWui
 			}
 		}
 
-		protected void ApplyResourceToControl(
+		protected void ApplyLanguageToControls(
 			Control control,
 			ComponentResourceManager cmp,
 			CultureInfo cultureInfo)
@@ -80,7 +78,7 @@ namespace Waifu2xWui
 
 			foreach (Control child in control.Controls)
 			{
-				ApplyResourceToControl(child, cmp, cultureInfo);
+				ApplyLanguageToControls(child, cmp, cultureInfo);
 			}
 		}
 	}

@@ -20,6 +20,7 @@ namespace Waifu2xWeb
 		public string Model { get; set; } = string.Empty;
 		public Device Device { get; set; }
 		public int NoiseReduction { get; set; }
+		public string LanguageIso { get; set; } = "EN";
 
 		public void SetDefaults()
 		{

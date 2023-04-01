@@ -210,12 +210,18 @@ namespace Waifu2xWui
 			}
 
 			FileInfo infos = new(filepath);
-			Bitmap img = new(filepath);
 
-			sourceWidth = img.Width;
-			label2.Text = $"Width: {img.Width} | Height: {img.Height} | Extension: {infos.Extension}";
-
-			img.Dispose();
+			try
+			{
+				Bitmap img = new(filepath);
+				sourceWidth = img.Width;
+				label2.Text = $"Width: {img.Width} | Height: {img.Height} | Extension: {infos.Extension}";
+				img.Dispose();
+			}
+			catch (Exception ex)
+			{
+				label2.Text = $"Can't read size | Extension: {infos.Extension}";
+			}
 		}
 
 		private void SaveProfile()
@@ -274,6 +280,9 @@ namespace Waifu2xWui
 				outputs.Add(output);
 			}
 			processor.Profile.OutputFiles = outputs;
+
+			// language
+			processor.Profile.LanguageIso = ((Language)language.SelectedValue).Iso;
 		}
 
 		private void OnProfileUpdated(object sender, EventArgs e)
@@ -290,6 +299,7 @@ namespace Waifu2xWui
 
 		private void OnLanguageChanged(object sender, EventArgs e)
 		{
+			UpdateProfile();
 			languageManager.SwitchToLanguage(this, (Language)language.SelectedValue);
 		}
 	}
